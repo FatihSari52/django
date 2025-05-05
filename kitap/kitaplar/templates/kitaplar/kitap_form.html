@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if kitap %}Kitap Düzenle{% else %}Yeni Kitap Ekle{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    {% if kitap %}Kitap Düzenle{% else %}Yeni Kitap Ekle{% endif %}
+                </h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Kitap Adı</label>
+                        <input type="text" class="form-control" id="title" name="title" 
+                               value="{{ kitap.title|default:'' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">İçerik</label>
+                        <textarea class="form-control" id="content" name="content" rows="5" required>{{ kitap.content|default:'' }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="published_time" class="form-label">Yayın Tarihi</label>
+                        <input type="date" class="form-control" id="published_time" name="published_time"
+                               value="{{ kitap.published_time|date:'Y-m-d'|default:'' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Fiyat</label>
+                        <input type="number" step="0.01" class="form-control" id="price" name="price"
+                               value="{{ kitap.price|default:'' }}">
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            {% if kitap %}Güncelle{% else %}Kaydet{% endif %}
+                        </button>
+                        <a href="{% url 'kitap_listesi' %}" class="btn btn-secondary">İptal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
