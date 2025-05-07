@@ -1,1 +1,3 @@
 # django
+
+CSS UPDATE EDİLDİ 
