@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Kitap Listesi{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>Kitap Listesi</h2>
+    </div>
+    <div class="col text-end">
+        <a href="{% url 'kitap_ekle' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Yeni Kitap Ekle
+        </a>
+    </div>
+</div>
+
+<!-- Filtreleme Formu -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Filtreleme</h5>
+    </div>
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="search" class="form-label">Arama</label>
+                <input type="text" class="form-control" id="search" name="search" 
+                       placeholder="Kitap adı veya içerik ara..." value="{{ search_query }}">
+            </div>
+            <div class="col-md-2">
+                <label for="min_price" class="form-label">Min Fiyat</label>
+                <input type="number" step="0.01" class="form-control" id="min_price" name="min_price" 
+                       value="{{ min_price }}">
+            </div>
+            <div class="col-md-2">
+                <label for="max_price" class="form-label">Max Fiyat</label>
+                <input type="number" step="0.01" class="form-control" id="max_price" name="max_price" 
+                       value="{{ max_price }}">
+            </div>
+            <div class="col-md-2">
+                <label for="start_date" class="form-label">Başlangıç Tarihi</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" 
+                       value="{{ start_date }}">
+            </div>
+            <div class="col-md-2">
+                <label for="end_date" class="form-label">Bitiş Tarihi</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" 
+                       value="{{ end_date }}">
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Filtrele</button>
+                <a href="{% url 'kitap_listesi' %}" class="btn btn-secondary">Filtreleri Temizle</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    {% for kitap in kitaplar %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ kitap.title }}</h5>
+                <p class="card-text">{{ kitap.content|truncatewords:30 }}</p>
+                {% if kitap.published_time %}
+                <p class="card-text"><small class="text-muted">Yayın Tarihi: {{ kitap.published_time }}</small></p>
+                {% endif %}
+                {% if kitap.price %}
+                <p class="card-text"><small class="text-muted">Fiyat: {{ kitap.price }} TL</small></p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <div class="btn-group" role="group">
+                    <a href="{% url 'kitap_detay' kitap.pk %}" class="btn btn-info btn-sm">Detay</a>
+                    <a href="{% url 'kitap_duzenle' kitap.pk %}" class="btn btn-warning btn-sm">Düzenle</a>
+                    <a href="{% url 'kitap_sil' kitap.pk %}" class="btn btn-danger btn-sm">Sil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col">
+        <div class="alert alert-info">
+            Henüz kitap eklenmemiş veya filtreleme kriterlerine uygun kitap bulunamadı.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %} 

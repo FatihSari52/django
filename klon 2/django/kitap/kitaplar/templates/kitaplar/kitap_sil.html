@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Kitap Sil{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Kitap Sil</h3>
+            </div>
+            <div class="card-body">
+                <p class="alert alert-danger">
+                    <strong>{{ kitap.title }}</strong> kitabını silmek istediğinizden emin misiniz?
+                </p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">Evet, Sil</button>
+                        <a href="{% url 'kitap_listesi' %}" class="btn btn-secondary">İptal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
